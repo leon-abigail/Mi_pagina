@@ -1,79 +1,147 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Inicio - Peperina</title>
+    <meta charset="UTF-8">
+    <title>Peperina - Bienvenidos</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap">
     <style>
-        body {
-            background-color: #D8E8D8; /* verde pastel */
-            color: #666633; /* verde oscuro para texto */
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+        :root {
+            --blanco-hueso: #F4F3EE;
+            --verde-claro: #A3B18A;
+            --verde-oscuro: #4F6A53;
+            --texto-principal: #3D403A;
         }
+
+        body, html {
+            height: 120%;
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--blanco-hueso);
+            color: var(--texto-principal);
+            position: relative;
+        }
+
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
         header {
-            background-color: #FFF9C4; /* amarillo claro */
+            background-color: var(--verde-claro);
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            flex: 1;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .contenido-principal {
             display: flex;
             align-items: center;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            gap: 50px;
+            flex-wrap: wrap;
+            text-align: left;
+            z-index: 1;
         }
-        header img {
-            height: 60px;
-            margin-right: 15px;
+
+        .contenido-principal img.logo {
+            height: 320px;
+            flex-shrink: 0;
         }
-        header h1 {
-            font-size: 2rem;
-            font-weight: 700;
+
+        .texto-principal h1 {
+            font-weight: 400;
+            color: var(--verde-oscuro);
+            font-size: 1.90em;
+            margin: 0 0 10px 0;
+        }
+
+        .texto-principal p {
+            font-size: 1.10em;
+            max-width: 500px;
             margin: 0;
-            color: #4a6a3a; /* verde más oscuro para contraste */
         }
-        main {
-            padding: 30px 20px;
-            text-align: center;
-        }
-        main h2 {
-            color: #557755;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        main p {
-            max-width: 600px;
-            margin: 0 auto;
-            font-size: 1.2rem;
-            line-height: 1.5;
-            color: #4a4a2a;
-        }
+
         footer {
-            background-color: #FFF9C4;
+            background-color: var(--verde-claro);
             text-align: center;
-            padding: 15px 0;
-            margin-top: 40px;
-            color: #556633;
-            font-size: 0.9rem;
+            padding: 0;
+            height: 100px; /* Igual al alto de la imagen flores.jpg */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .instagram {
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: var(--verde-oscuro);
+        }
+
+        .flores-derecha {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: auto;
+            opacity: 0.85;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @media (max-width: 600px) {
+            .contenido-principal {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .contenido-principal img.logo {
+                margin-bottom: 20px;
+            }
+
+            footer {
+                height: auto;
+                padding: 20px 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="page-container">
+        <header>
+            <h2>♥ Bienvenidos a Peperina ♥</h2>
+        </header>
 
-<header>
-    <img src="{% static 'logo_peperina.jpg' %}" alt="Logo Peperina" />
-    <h1>Peperina</h1>
-</header>
+        <main>
+            <div class="contenido-principal">
+                <img src="{% static 'images/logo_peperina.jpg' %}" alt="Logo Peperina" class="logo">
+                <div class="texto-principal">
+                    <h1>Un espacio donde pueden encontrar</h1>
+                    <p>Una selección de productos naturales pensados para tu bienestar. Té, blends, yerbas, sales saborizadas y mucho más.</p>
+                </div>
+            </div>
+        </main>
 
-<main>
-    <h2>Bienvenido a Peperina</h2>
-    <p>
-        Descubre nuestros productos naturales y especiales hechos con cariño para vos.
-        Explora nuestra tienda y disfruta de la mejor calidad en cada sorbo.
-    </p>
-</main>
+        <footer>
+            <p>Hecho con el ♥ en Santiago del Estero</p>
+            <div class="instagram">@peperina.natural</div>
+        </footer>
+    </div>
 
-<footer>
-    &copy; 2025 Peperina - Todos los derechos reservados
-</footer>
-
+    <img src="{% static 'images/flores.jpg' %}" alt="Flores decorativas" class="flores-derecha">
 </body>
 </html>

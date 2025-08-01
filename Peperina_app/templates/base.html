@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Peperina{% endblock %}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap">
+    <style>
+        :root {
+            --blanco-hueso: #F4F3EE;
+            --verde-claro: #A3B18A;
+            --verde-oscuro: #4F6A53;
+            --texto-principal: #3D403A;
+        }
+
+        body, html {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--blanco-hueso);
+            color: var(--texto-principal);
+        }
+
+        header {
+            background-color: var(--verde-claro);
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            padding: 40px 20px;
+        }
+
+        footer {
+            background-color: var(--verde-claro);
+            text-align: center;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .instagram {
+            font-size: 0.9em;
+            color: var(--verde-oscuro);
+        }
+
+        .catalogo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .producto-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.1);
+            padding: 15px;
+            width: 220px;
+            text-align: center;
+        }
+
+        .producto-card h3 {
+            color: var(--verde-oscuro);
+            margin-bottom: 10px;
+        }
+
+        .producto-card p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Peperina</h2>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Hecho con ♥ en Santiago del Estero</p>
+        <div class="instagram">@peperina.natural</div>
+    </footer>
+</body>
+</html>
