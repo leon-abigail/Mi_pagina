@@ -60,6 +60,10 @@
             flex-shrink: 0;
         }
 
+        .texto-principal {
+            max-width: 500px;
+        }
+
         .texto-principal h1 {
             font-weight: 400;
             color: var(--verde-oscuro);
@@ -69,15 +73,30 @@
 
         .texto-principal p {
             font-size: 1.10em;
-            max-width: 500px;
-            margin: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .boton-ver-productos {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: var(--verde-oscuro);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .boton-ver-productos:hover {
+            background-color: #3d5742;
         }
 
         footer {
             background-color: var(--verde-claro);
             text-align: center;
             padding: 0;
-            height: 100px; /* Igual al alto de la imagen flores.jpg */
+            height: 100px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -113,6 +132,10 @@
                 margin-bottom: 20px;
             }
 
+            .boton-ver-productos {
+                margin-top: 15px;
+            }
+
             footer {
                 height: auto;
                 padding: 20px 10px;
@@ -132,6 +155,7 @@
                 <div class="texto-principal">
                     <h1>Un espacio donde pueden encontrar</h1>
                     <p>Una selección de productos naturales pensados para tu bienestar. Té, blends, yerbas, sales saborizadas y mucho más.</p>
+                    <a href="{% url 'lista_productos' %}" class="boton-ver-productos">Ver productos disponibles</a>
                 </div>
             </div>
         </main>
@@ -145,3 +169,4 @@
     <img src="{% static 'images/flores.jpg' %}" alt="Flores decorativas" class="flores-derecha">
 </body>
 </html>
+

@@ -1,10 +1,11 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>{% block title %}Peperina{% endblock %}</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet" />
     <style>
         :root {
             --blanco-hueso: #F4F3EE;
@@ -13,7 +14,7 @@
             --texto-principal: #3D403A;
         }
 
-        body, html {
+        body {
             margin: 0;
             font-family: 'Montserrat', sans-serif;
             background-color: var(--blanco-hueso);
@@ -22,66 +23,78 @@
 
         header {
             background-color: var(--verde-claro);
-            padding: 20px;
-            text-align: center;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--verde-oscuro);
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+
+        nav a {
+            margin-left: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--verde-oscuro);
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--verde-claro);
+        }
+
+        nav a.button {
+            background-color: var(--verde-oscuro);
+            color: var(--blanco-hueso);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        nav a.button:hover {
+            background-color: var(--verde-claro);
+            color: var(--verde-oscuro);
         }
 
         main {
+            min-height: 70vh;
             padding: 40px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
         footer {
             background-color: var(--verde-claro);
             text-align: center;
-            height: 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .instagram {
-            font-size: 0.9em;
+            padding: 15px 10px;
             color: var(--verde-oscuro);
-        }
-
-        .catalogo {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-        }
-
-        .producto-card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 6px rgba(0,0,0,0.1);
-            padding: 15px;
-            width: 220px;
-            text-align: center;
-        }
-
-        .producto-card h3 {
-            color: var(--verde-oscuro);
-            margin-bottom: 10px;
-        }
-
-        .producto-card p {
-            margin: 5px 0;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
     </style>
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     <header>
-        <h2>Peperina</h2>
+        <h1>PEPERINA</h1>
+        <nav>
+            <a href="{% url 'home' %}">Inicio</a>
+            <a href="{% url 'lista_productos' %}" class="button">Productos</a>
+        </nav>
     </header>
 
     <main>
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </main>
 
     <footer>
-        <p>Hecho con ♥ en Santiago del Estero</p>
-        <div class="instagram">@peperina.natural</div>
+        © 2025 Peperina - Hecho con el ♥ en Santiago del Estero
     </footer>
 </body>
 </html>
