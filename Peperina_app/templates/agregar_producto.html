@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar Producto{% endblock %}
+
+{% block content %}
+<h2>Agregar Producto</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" style="background-color: var(--verde-claro); border: none; padding: 10px 20px; color: var(--texto-principal); font-weight: 600; cursor: pointer;">
+        Guardar
+    </button>
+</form>
+
+{% endblock %}
+
