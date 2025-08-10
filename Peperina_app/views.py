@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal, InvalidOperation
+from django.contrib.auth.decorators import permission_required
 
 from .models import Producto, Categoria, Marca
 from .forms import ProductoForm
