@@ -1,13 +1,24 @@
 from django.contrib import admin
-from .models import producto
+from .models import Categoria, Marca, Producto, Cliente
 
-@admin.register(producto)
+@admin.register(Categoria)
+class CategoriaAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'slug')
+    prepopulated_fields = {"slug": ("nombre",)}
+    search_fields = ('nombre',)
+
+@admin.register(Marca)
+class MarcaAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'descripcion')
+    search_fields = ('nombre',)
+
+@admin.register(Producto)
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'precio', 'categoria')  # muestra estas columnas en el listado
-    search_fields = ('nombre',)  # permite buscar por nombre
-    list_filter = ('categoria',)  # filtros por categoría (si tienes)
+    list_display = ('nombre', 'precio', 'categoria', 'marca')
+    list_filter = ('categoria', 'marca')
+    search_fields = ('nombre', 'descripcion')
 
-# Si no quieres usar el decorador, puedes hacer también:
-# admin.site.register(Producto, ProductoAdmin)
-
-
+@admin.register(Cliente)
+class ClienteAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'email', 'telefono')
+    search_fields = ('nombre', 'email')

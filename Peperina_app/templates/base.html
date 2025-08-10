@@ -1,100 +1,65 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <title>{% block title %}Peperina{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet" />
-    <style>
-        :root {
-            --blanco-hueso: #F4F3EE;
-            --verde-claro: #A3B18A;
-            --verde-oscuro: #4F6A53;
-            --texto-principal: #3D403A;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--blanco-hueso);
-            color: var(--texto-principal);
-        }
-
-        header {
-            background-color: var(--verde-claro);
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header h1 {
-            margin: 0;
-            color: var(--verde-oscuro);
-            font-weight: 600;
-            font-size: 1.8rem;
-        }
-
-        nav a {
-            margin-left: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            color: var(--verde-oscuro);
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--verde-claro);
-        }
-
-        nav a.button {
-            background-color: var(--verde-oscuro);
-            color: var(--blanco-hueso);
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        nav a.button:hover {
-            background-color: var(--verde-claro);
-            color: var(--verde-oscuro);
-        }
-
-        main {
-            min-height: 70vh;
-            padding: 40px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        footer {
-            background-color: var(--verde-claro);
-            text-align: center;
-            padding: 15px 10px;
-            color: var(--verde-oscuro);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-    </style>
-    {% block extra_head %}{% endblock %}
+  <meta charset="UTF-8" />
+  <title>{% block title %}Peperina{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --blanco-hueso:#F4F3EE;
+      --verde-claro:#A3B18A;
+      --verde-oscuro:#4F6A53;
+      --texto-principal:#3D403A;
+    }
+    html,body{margin:0;background:var(--blanco-hueso);color:var(--texto-principal);font-family:'Montserrat',sans-serif}
+    .page{min-height:100vh;display:flex;flex-direction:column}
+    header.site{background:var(--verde-claro);padding:14px 16px}
+    .nav{display:flex;gap:.5rem;align-items:center}
+    .spacer{flex:1}
+    .brand{font-weight:700;letter-spacing:.3px}
+    .btn-verde{
+      display:inline-block;background:var(--verde-oscuro);color:#fff;text-decoration:none;
+      padding:.55rem .9rem;border-radius:10px;font-weight:600;font-size:.95rem
+    }
+    .contenedor{width:min(1100px,92%);margin:0 auto}
+    main.site{flex:1;padding:24px 0}
+    footer.site{background:var(--verde-claro);text-align:center;padding:16px}
+    @media (max-width:640px){ .nav{flex-wrap:wrap} }
+  </style>
+  {% block head %}{% endblock %}
 </head>
 <body>
-    <header>
-        <h1>PEPERINA</h1>
-        <nav>
-            <a href="{% url 'home' %}">Inicio</a>
-            <a href="{% url 'lista_productos' %}" class="button">Productos</a>
-        </nav>
+  <div class="page">
+    <header class="site">
+      <div class="contenedor nav">
+        <div class="brand">Peperina</div>
+        <div class="spacer"></div>
+
+        {# === BLOQUE QUE PODÉS VACÍAR EN PAGINAS ESPECÍFICAS === #}
+        {% block menu %}
+          <a href="{% url 'home' %}" class="btn-verde">Inicio</a>
+          <a href="{% url 'lista_productos' %}" class="btn-verde">Productos</a>
+        {% endblock %}
+        {# ====================================================== #}
+      </div>
     </header>
 
-    <main>
-        {% block content %}
-        {% endblock %}
+    <main class="site">
+      <div class="contenedor">
+        {% block content %}{% endblock %}
+      </div>
     </main>
 
-    <footer>
-        © 2025 Peperina - Hecho con el ♥ en Santiago del Estero
+    <footer class="site">
+      {% block footer %}
+        <!-- Tu footer general (si usás el footer con movimiento en home, déjalo en home) -->
+        © {{ now|date:"Y" }} Peperina | Productos Naturales & Bienestar
+      {% endblock %}
     </footer>
+  </div>
+
+  {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -1,17 +1,43 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}Agregar Producto{% endblock %}
+{% block title %}Agregar producto | Peperina{% endblock %}
 
 {% block content %}
-<h2>Agregar Producto</h2>
+<div class="contenedor" style="max-width:900px;">
+  <header class="encabezado-seccion">
+    <h1>Agregar producto</h1>
+    <p>Solo visible para administradores.</p>
+  </header>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" style="background-color: var(--verde-claro); border: none; padding: 10px 20px; color: var(--texto-principal); font-weight: 600; cursor: pointer;">
-        Guardar
-    </button>
-</form>
-
+  {% if user.is_staff %}
+    <form method="post" enctype="multipart/form-data" class="card" style="background:#fff; border-radius:16px; padding:1rem; box-shadow:0 4px 16px rgba(0,0,0,.06);">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="form-grid" style="display:grid; gap:1rem; grid-template-columns:1fr 1fr;">
+        {% for field in form %}
+          <div style="display:flex; flex-direction:column;">
+            <label for="{{ field.id_for_label }}" style="font-weight:600; margin-bottom:.25rem;">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}<small style="opacity:.7;">{{ field.help_text }}</small>{% endif %}
+            {% for error in field.errors %}
+              <small style="color:#b00020;">{{ error }}</small>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+      <div style="margin-top:1rem; display:flex; gap:.5rem;">
+        <button type="submit" class="btn-primario">Guardar</button>
+        <a href="{% url 'lista_productos' %}" class="btn-secundario">Cancelar</a>
+      </div>
+    </form>
+  {% else %}
+    <div class="card" style="background:#fff; border-radius:16px; padding:1rem; box-shadow:0 4px 16px rgba(0,0,0,.06);">
+      <p>Necesitás permisos de administrador para acceder a esta página.</p>
+      <a href="{% url 'login' %}" class="btn-primario">Iniciar sesión</a>
+    </div>
+  {% endif %}
+</div>
 {% endblock %}
+
 

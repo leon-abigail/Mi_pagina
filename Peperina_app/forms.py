@@ -1,17 +1,14 @@
 from django import forms
-from .models import producto
+from .models import Producto
 
 class ProductoForm(forms.ModelForm):
     class Meta:
-        model = producto
-        fields = ['nombre', 'descripcion', 'precio', 'categoria', 'imagen']
+        model = Producto
+        fields = ['nombre', 'descripcion', 'precio', 'categoria', 'marca', 'imagen']
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'precio': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
-            'categoria': forms.TextInput(attrs={'class': 'form-control'}),
-            'imagen': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            'nombre': forms.TextInput(attrs={'placeholder': 'Nombre del producto', 'style': 'width:100%; padding:8px; border-radius:6px;'}),
+            'descripcion': forms.Textarea(attrs={'placeholder': 'Descripción (opcional)', 'rows':3, 'style': 'width:100%; padding:8px; border-radius:6px;'}),
+            'precio': forms.NumberInput(attrs={'step': '0.01', 'style': 'width:150px; padding:8px; border-radius:6px;'}),
+            'categoria': forms.Select(attrs={'style': 'padding:8px; border-radius:6px;'}),
+            'marca': forms.Select(attrs={'style': 'padding:8px; border-radius:6px;'}),
         }
-
-
-

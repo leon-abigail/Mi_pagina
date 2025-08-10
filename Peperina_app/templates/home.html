@@ -67,7 +67,7 @@
         .texto-principal h1 {
             font-weight: 400;
             color: var(--verde-oscuro);
-            font-size: 1.90em;
+            font-size: 1.750em;
             margin: 0 0 10px 0;
         }
 
@@ -92,7 +92,23 @@
             background-color: #3d5742;
         }
 
-        footer {
+        .flores-derecha {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 100px;
+        height: auto;
+        opacity: 0.85;
+        z-index: 10;           /* ↑ más alto que el footer */
+        pointer-events: none;
+        }
+
+        /* ===== Footer fijo con parallax visible ===== */
+        footer#barra-inferior {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
             background-color: var(--verde-claro);
             text-align: center;
             padding: 0;
@@ -100,9 +116,14 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            z-index: 2;
-            position: relative;
+            z-index: 2;            /* ↓ más bajo que la flor */
+            will-change: transform;
+            transform: translateY(0);
+            pointer-events: none;
         }
+
+        /* Espaciador para que el footer fijo no tape contenido */
+        .footer-spacer { height: 100px; }
 
         .instagram {
             margin-top: 5px;
@@ -110,16 +131,7 @@
             color: var(--verde-oscuro);
         }
 
-        .flores-derecha {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 100px;
-            height: auto;
-            opacity: 0.85;
-            z-index: 1;
-            pointer-events: none;
-        }
+    
 
         @media (max-width: 600px) {
             .contenido-principal {
@@ -136,10 +148,12 @@
                 margin-top: 15px;
             }
 
-            footer {
-                height: auto;
-                padding: 20px 10px;
-            }
+            .footer-spacer { height: 120px; } /* un poco más alto en mobile */
+        }
+
+        /* Respeta accesibilidad */
+        @media (prefers-reduced-motion: reduce){
+            footer#barra-inferior { transform: none !important; }
         }
     </style>
 </head>
@@ -153,20 +167,50 @@
             <div class="contenido-principal">
                 <img src="{% static 'images/logo_peperina.jpg' %}" alt="Logo Peperina" class="logo">
                 <div class="texto-principal">
-                    <h1>Un espacio donde pueden encontrar</h1>
-                    <p>Una selección de productos naturales pensados para tu bienestar. Té, blends, yerbas, sales saborizadas y mucho más.</p>
+                    <h1>Un espacio de productos naturales pensados para tu bienestar.</h1>
+                    <p> Té, blends, yerbas, sales saborizadas y mucho más.</p>
                     <a href="{% url 'lista_productos' %}" class="boton-ver-productos">Ver productos disponibles</a>
                 </div>
             </div>
         </main>
 
-        <footer>
-            <p>Hecho con el ♥ en Santiago del Estero</p>
-            <div class="instagram">@peperina.natural</div>
-        </footer>
+        <!-- Espaciador para que el footer fijo no cubra el contenido -->
+        <div class="footer-spacer"></div>
     </div>
 
+    <!-- Footer fijo al fondo con movimiento -->
+    <footer id="barra-inferior">
+        <p>Hecho con el ♥ en Santiago del Estero</p>
+        <div class="instagram">@peperina.natural</div>
+    </footer>
+
     <img src="{% static 'images/flores.jpg' %}" alt="Flores decorativas" class="flores-derecha">
+
+    <!-- Parallax claro (ajustá factor para más/menos movimiento) -->
+    <script>
+    (function(){
+        const bar = document.getElementById('barra-inferior');
+        if(!bar) return;
+
+        // 0.25 se nota bien; probá 0.15 (más suave) o 0.35 (más marcado)
+        const factor = 0.20;
+        let ticking = false;
+
+        function onScroll(){
+            if(ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                const y = window.scrollY || window.pageYOffset || 0;
+                // Mueve la barra en sentido opuesto al scroll (parallax)
+                bar.style.transform = 'translateY(' + (y * factor * -1) + 'px)';
+                ticking = false;
+            });
+        }
+
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+    })();
+    </script>
 </body>
 </html>
-

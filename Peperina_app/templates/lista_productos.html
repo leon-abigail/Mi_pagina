@@ -1,23 +1,98 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% block menu %}{% endblock %}
 
-{% block title %}Lista de Productos{% endblock %}
+{% block title %}Productos | Peperina{% endblock %}
+
 
 {% block content %}
-<h2>Productos Disponibles</h2>
+<style>
+/* Barra de filtros estética */
+.filtros {display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;background:#fff;padding:1rem;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.filtros .field{display:flex;align-items:center;gap:.5rem;background:var(--blanco-hueso,#F4F3EE);border-radius:12px;padding:.55rem .8rem}
+.filtros input,.filtros select{border:none;background:transparent;outline:none;font-size:.95rem;min-width:180px}
+.filtros .act{display:flex;gap:.5rem;margin-left:auto}
+.btn-chip{border:none;border-radius:999px;padding:.6rem 1rem;cursor:pointer;background:var(--verde-oscuro,#4F6A53);color:#fff;font-weight:600;box-shadow:0 3px 10px rgba(0,0,0,.08);text-decoration:none}
+.btn-link{background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:999px;padding:.55rem .9rem;text-decoration:none;color:var(--verde-oscuro,#4F6A53)}
+.volver{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;margin:.5rem 0 1rem 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-top:24px} /* <-- más espacio bajo filtros */
+.card{background:#fff;border-radius:16px;padding:1rem;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.thumb{aspect-ratio:1/1;overflow:hidden;border-radius:999px;background:var(--blanco-hueso,#F4F3EE);display:flex;align-items:center;justify-content:center;margin-bottom:.75rem}
+.thumb img{width:100%;height:100%;object-fit:cover}
+@media (max-width:640px){ .filtros input,.filtros select{min-width:140px} .filtros .act{width:100%;justify-content:stretch} .btn-chip,.btn-link{flex:1;text-align:center} }
+</style>
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
-    {% for producto in productos %}
-    <div style="background-color: var(--blanco-hueso); border: 1px solid var(--verde-claro); padding: 15px; border-radius: 8px; width: 250px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-        <h3 style="color: var(--verde-oscuro); margin-top: 0;">{{ producto.nombre }}</h3>
-        <p>{{ producto.descripcion }}</p>
-        <p><strong>Precio:</strong> ${{ producto.precio }}</p>
-        {% if producto.imagen %}
-            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" style="max-width: 100%; height: auto; margin-top: 10px; border-radius: 5px;">
-        {% endif %}
+<div class="contenedor">
+  <a href="{% url 'home' %}" class="volver btn-link">← Volver al inicio</a>
+
+  <header class="encabezado-seccion">
+    <h1>Productos</h1>
+    <p>Encontrá tés, blends, cafés, yerbas y más.</p>
+  </header>
+
+  <!-- Filtros -->
+  <form method="get" action="{% url 'lista_productos' %}" class="filtros">
+    <label class="field" aria-label="Buscar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.2-4.2M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <input type="text" name="q" placeholder="Buscar productos…" value="{{ q|default:'' }}">
+    </label>
+
+    <label class="field" aria-label="Categoría">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M6 12h12M10 18h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <select name="categoria">
+        <option value="">Todas las categorías</option>
+        {% for c in categorias %}
+          <option value="{{ c.slug }}" {% if categoria_slug == c.slug %}selected{% endif %}>{{ c.nombre }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label class="field" aria-label="Precio mínimo"><span>$</span>
+      <input type="number" name="min_price" min="0" step="1" placeholder="Mín." value="{{ min_price|default:'' }}">
+    </label>
+
+    <label class="field" aria-label="Precio máximo"><span>$</span>
+      <input type="number" name="max_price" min="0" step="1" placeholder="Máx." value="{{ max_price|default:'' }}">
+    </label>
+
+    <div class="act">
+      <button type="submit" class="btn-chip">Aplicar</button>
+      {% if request.GET %}
+        <a href="{% url 'lista_productos' %}" class="btn-link">Limpiar</a>
+      {% endif %}
     </div>
-    {% empty %}
-    <p>No hay productos disponibles.</p>
-    {% endfor %}
-</div>
+  </form>
 
+  <!-- Grilla -->
+  {% if productos %}
+    <div class="grid">
+      {% for p in productos %}
+        <article class="card">
+          <a href="{% url 'detalle_producto' p.id %}" style="text-decoration:none;color:inherit;">
+            <div class="thumb">
+              {% if p.imagen %}<img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">{% else %}<span style="opacity:.6;">Sin imagen</span>{% endif %}
+            </div>
+            <h3 style="margin:.25rem 0 .15rem 0;color:var(--verde-oscuro,#4F6A53)">{{ p.nombre }}</h3>
+            <p style="margin:0;opacity:.75">{{ p.categoria.nombre }}</p>
+            <p style="margin:.5rem 0 0 0;font-weight:700">{% if p.precio %}${{ p.precio }}{% else %}<span style="opacity:.7;">Consultar</span>{% endif %}</p>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div style="padding:2rem;text-align:center;opacity:.8;">No encontramos productos con esos filtros.</div>
+  {% endif %}
+
+  <!-- Paginación (si usás page_obj) -->
+  {% if page_obj and page_obj.has_other_pages %}
+    <nav style="display:flex;gap:.5rem;justify-content:center;margin-top:1.25rem">
+      {% if page_obj.has_previous %}
+        <a class="btn-link" href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if categoria_slug %}&categoria={{ categoria_slug }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">Anterior</a>
+      {% endif %}
+      <span style="align-self:center">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a class="btn-link" href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if categoria_slug %}&categoria={{ categoria_slug }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">Siguiente</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+</div>
 {% endblock %}
