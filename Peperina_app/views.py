@@ -79,3 +79,9 @@ def agregar_producto(request):
 
 def lista_categorias(request):
     return render(request, 'lista_categorias.html')
+
+
+#vistas basadas en clases 
+
+
+    

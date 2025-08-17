@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
@@ -37,12 +38,15 @@
         <div class="brand">Peperina</div>
         <div class="spacer"></div>
 
-        {# === BLOQUE QUE PODÉS VACÍAR EN PAGINAS ESPECÍFICAS === #}
+        {# === MENÚ ARRIBA A LA DERECHA === #}
         {% block menu %}
-          <a href="{% url 'home' %}" class="btn-verde">Inicio</a>
-          <a href="{% url 'lista_productos' %}" class="btn-verde">Productos</a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn-verde">Cerrar sesión</a>
+          {% else %}
+            <a href="{% url 'login' %}" class="btn-verde">Iniciar sesión</a>
+          {% endif %}
         {% endblock %}
-        {# ====================================================== #}
+        {# ================================= #}
       </div>
     </header>
 
@@ -54,8 +58,7 @@
 
     <footer class="site">
       {% block footer %}
-        <!-- Tu footer general (si usás el footer con movimiento en home, déjalo en home) -->
-        © {{ now|date:"Y" }} Peperina | Productos Naturales & Bienestar
+        © {{ now|date:"Y" }} Peperina | Productos Naturales &amp; Bienestar
       {% endblock %}
     </footer>
   </div>

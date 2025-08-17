@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Mi perfil | Peperina{% endblock %}
+
+{% block content %}
+<style>
+.perfil-card{background:#fff;border-radius:16px;padding:1.25rem;box-shadow:0 10px 28px rgba(0,0,0,.08);max-width:720px;margin:0 auto}
+.perfil-header{display:flex;gap:1rem;align-items:center;margin-bottom:1rem}
+.perfil-avatar{width:72px;height:72px;border-radius:999px;background:#F4F3EE;display:flex;align-items:center;justify-content:center;font-size:28px;color:#4F6A53;font-weight:700}
+.perfil-actions{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem}
+.btn-verde{display:inline-block;background:#4F6A53;color:#fff;text-decoration:none;padding:.55rem .9rem;border-radius:10px;font-weight:600}
+.btn-outline{display:inline-block;text-decoration:none;border:2px solid #4F6A53;color:#4F6A53;background:transparent;padding:.45rem .9rem;border-radius:10px;font-weight:700}
+</style>
+
+<div class="contenedor">
+  <div class="perfil-card">
+    <div class="perfil-header">
+      <div class="perfil-avatar">{{ perfil.username|first|upper }}</div>
+      <div>
+        <h1 style="margin:.2rem 0;">{{ perfil.username }}</h1>
+        <p style="margin:0;opacity:.75;">{{ perfil.email|default:"Sin email" }}</p>
+      </div>
+    </div>
+
+    <ul style="list-style:none;padding:0;margin:0;">
+      <li><strong>Nombre de usuario:</strong> {{ perfil.username }}</li>
+      <li><strong>Email:</strong> {{ perfil.email|default:"Sin email" }}</li>
+      <li><strong>Último acceso:</strong> {{ perfil.last_login|date:"d/m/Y H:i" }}</li>
+      <li><strong>Registrado:</strong> {{ perfil.date_joined|date:"d/m/Y H:i" }}</li>
+    </ul>
+
+    <div class="perfil-actions">
+      <a class="btn-outline" href="{% url 'home' %}">← Volver al inicio</a>
+      <a class="btn-verde" href="{% url 'logout' %}">Cerrar sesión</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

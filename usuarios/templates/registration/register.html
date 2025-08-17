@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Crear cuenta | Peperina{% endblock %}
+
+{# 👉 Bloque vacío para que no se muestre "Iniciar sesión" arriba a la derecha #}
+{% block menu %}{% endblock %}
+
+{% block head %}
+<style>
+  .auth-bg{
+    position:fixed; inset:0;
+    background:url("{% static 'img/fondo_textura.jpg' %}") center/cover no-repeat fixed;
+    z-index:-1;
+  }
+  html,body,.page,main.site{background:transparent!important}
+  header.site,footer.site{background:transparent!important;box-shadow:none!important}
+
+  /* Botón volver arriba-izquierda */
+  .back-home{
+    position: fixed; top: 18px; left: 18px;
+    display: inline-flex; align-items: center; gap: .5rem;
+    text-decoration: none;
+    background: rgba(255,255,255,.92);
+    padding: .55rem .9rem; border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    color: #4F6A53; font-weight: 700; z-index: 10;
+  }
+  .back-home:hover{ filter: brightness(.95); }
+
+  .auth-wrap{min-height:100vh;display:grid;place-items:center;padding:24px}
+  .auth-card{
+    width:min(460px,92%);
+    background:rgba(255,255,255,.92);
+    border-radius:16px;
+    box-shadow:0 12px 32px rgba(0,0,0,.18);
+    padding:24px;
+    text-align:center;
+    backdrop-filter:blur(2px)
+  }
+  .auth-card h2{margin:0 0 12px;color:#4F6A53}
+  .group{margin:.65rem 0;text-align:left}
+  .label{font-weight:700;color:#4F6A53;margin-bottom:.35rem;display:block}
+  .field{display:flex;align-items:center;gap:.5rem;background:#F4F3EE;border-radius:10px;padding:.65rem .8rem}
+  .field input{flex:1;border:none;outline:none;background:transparent;font-size:15px}
+  .emoji{font-size:18px;opacity:.8}
+  .help{font-size:.85rem;opacity:.8;margin:.35rem 0 0 0}
+  .errors{background:#ffeaea;border:1px solid #e1b3b3;color:#7b2e2e;border-radius:10px;padding:.6rem;margin:.5rem 0}
+  .btn-auth{display:block;width:100%;margin-top:.9rem;background:#4F6A53;color:#fff;border:none;border-radius:10px;padding:.8rem 1rem;cursor:pointer;font-weight:700}
+  .btn-auth:hover{filter:brightness(.95)}
+  .alt{margin-top:.85rem;font-size:.95rem}
+  .alt a{color:#4F6A53;font-weight:700;text-decoration:none}
+</style>
+{% endblock %}
+
+{% block content %}
+<a class="back-home" href="{% url 'home' %}">← Volver al inicio</a>
+
+<div class="auth-bg" aria-hidden="true"></div>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h2>🌱 Crear cuenta</h2>
+
+    {% if form.errors %}
+      <div class="errors">Por favor revisá los campos marcados.</div>
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <!-- Usuario -->
+      <div class="group">
+        <span class="label">{{ form.username.label }}</span>
+        <label class="field"><span class="emoji">👤</span> {{ form.username }}</label>
+        {% if form.username.help_text %}<div class="help">{{ form.username.help_text }}</div>{% endif %}
+        {% if form.username.errors %}<div class="errors">{{ form.username.errors|striptags }}</div>{% endif %}
+      </div>
+
+      <!-- Email -->
+      {% if form.email %}
+      <div class="group">
+        <span class="label">{{ form.email.label }}</span>
+        <label class="field"><span class="emoji">✉️</span> {{ form.email }}</label>
+        {% if form.email.help_text %}<div class="help">{{ form.email.help_text }}</div>{% endif %}
+        {% if form.email.errors %}<div class="errors">{{ form.email.errors|striptags }}</div>{% endif %}
+      </div>
+      {% endif %}
+
+      <!-- Contraseña -->
+      <div class="group">
+        <span class="label">{{ form.password1.label }}</span>
+        <label class="field"><span class="emoji">🔑</span> {{ form.password1 }}</label>
+        {% if form.password1.help_text %}<div class="help">{{ form.password1.help_text|safe }}</div>{% endif %}
+        {% if form.password1.errors %}<div class="errors">{{ form.password1.errors|striptags }}</div>{% endif %}
+      </div>
+
+      <!-- Repetir contraseña -->
+      <div class="group">
+        <span class="label">{{ form.password2.label }}</span>
+        <label class="field"><span class="emoji">🔒</span> {{ form.password2 }}</label>
+        {% if form.password2.help_text %}<div class="help">{{ form.password2.help_text }}</div>{% endif %}
+        {% if form.password2.errors %}<div class="errors">{{ form.password2.errors|striptags }}</div>{% endif %}
+      </div>
+
+      <button class="btn-auth" type="submit">✨ Registrarme</button>
+    </form>
+
+    <div class="alt">
+      ¿Ya tenés cuenta? <a href="{% url 'login' %}">🔑 Iniciar sesión</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

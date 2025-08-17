@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Oculta la barra del header únicamente en esta vista #}
+{% block menu %}{% endblock %}
+
+{% block title %}Iniciar sesión | Peperina{% endblock %}
+
+{% block head %}
+<style>
+  .auth-bg{
+    position:fixed; inset:0;
+    background: url("{% static 'images/fondo_textura.jpg' %}") center/cover no-repeat fixed;
+    z-index:-1;
+  }
+  html, body, .page, main.site { background: transparent !important; }
+  header.site, footer.site { background: transparent !important; box-shadow:none !important; }
+
+  .back-home{
+    position: fixed; top: 18px; left: 18px;
+    display: inline-flex; align-items: center; gap: .5rem;
+    text-decoration: none;
+    background: rgba(255,255,255,.92);
+    padding: .55rem .9rem; border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    color: #4F6A53; font-weight: 700; z-index: 10;
+  }
+  .back-home:hover{ filter: brightness(.95); }
+
+  .auth-wrap{ min-height:80svh; display:grid; place-items:center; padding:24px; }
+  .auth-card{
+    width:min(720px, 92%);
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(6px);
+    border-radius:20px;
+    box-shadow:0 20px 32px rgba(0,0,0,.18);
+    padding: clamp(28px, 6vw, 64px);
+    text-align:center;
+  }
+  .auth-card h2{ margin:0 0 12px; color:#4F6A53; font-size: clamp(26px, 4vw, 36px); }
+
+  .group{ margin:.8rem 0; text-align:left; }
+  .label{ display:block; font-weight:700; color:#4F6A53; margin-bottom:.35rem; }
+  .field{
+    display:flex; align-items:center; gap:.5rem;
+    background:#F4F3EE; border-radius:10px; padding:.65rem .8rem;
+  }
+  .emoji{ font-size:18px; opacity:.85; }
+  .field input{ flex:1; border:none; outline:none; background:transparent; font-size:15px; }
+
+  .errors{ background:#ffeaea; border:1px solid #e1b3b3; color:#7b2e2e; border-radius:10px; padding:.6rem; margin:.5rem 0; }
+  .btn-auth{
+    width:100%; margin-top:1rem;
+    background:#4F6A53; color:#fff; border:none; border-radius:12px; padding:.9rem 1rem;
+    cursor:pointer; font-weight:700;
+  }
+  .btn-auth:hover{ filter:brightness(.95); }
+  .alt{ margin-top:.9rem; font-size:.95rem; }
+  .alt a{ color:#4F6A53; font-weight:700; text-decoration:none; }
+</style>
+{% endblock %}
+
+{% block content %}
+<a class="back-home" href="{% url 'home' %}">← Volver al inicio</a>
+
+<div class="auth-bg" aria-hidden="true"></div>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h2>🌿 Iniciar sesión</h2>
+
+    {% if form.errors %}
+      <div class="errors">Usuario o contraseña incorrectos.</div>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="group">
+        <span class="label">Nombre de usuario</span>
+        <label class="field">
+          <span class="emoji">👤</span>
+          {{ form.username }}
+        </label>
+      </div>
+
+      <div class="group">
+        <span class="label">Contraseña</span>
+        <label class="field">
+          <span class="emoji">🔑</span>
+          {{ form.password }}
+        </label>
+      </div>
+
+      <button class="btn-auth" type="submit">✨ Entrar</button>
+    </form>
+
+    <div class="alt">
+      ¿No tenés cuenta? <a href="{% url 'register' %}">🌱 Registrate</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
