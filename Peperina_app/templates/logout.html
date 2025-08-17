@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Cerrar sesión | Peperina{% endblock %}
+
+{% block content %}
+<div class="contenedor" style="max-width:520px;">
+  <header class="encabezado-seccion">
+    <h1>Sesión finalizada</h1>
+  </header>
+  <p>Has cerrado sesión correctamente.</p>
+  <div style="margin-top:1rem; display:flex; gap:.5rem;">
+    <a href="{% url 'login' %}" class="btn-primario">Iniciar sesión</a>
+    <a href="{% url 'home' %}" class="btn-secundario">Volver al inicio</a>
+  </div>
+</div>
+{% endblock %}
